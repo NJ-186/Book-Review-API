@@ -1,8 +1,14 @@
 from django.db import models
 
+import jwt
+from django.conf import settings
+
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 
+from datetime import datetime
+from django.utils.timezone import timedelta
+import time
 # Create your models here.
 
 class UserManager(BaseUserManager):
@@ -13,7 +19,7 @@ class UserManager(BaseUserManager):
  
 class AuthorManager(BaseUserManager):
  
-    def create_author(self, first_name, last_name, email, bio, password=None):
+    def create_author(self, first_name, last_name, email, bio, password=None, **extra_fields):
         
         if email is None:
             raise TypeError('Users must have an email address.')
@@ -28,14 +34,14 @@ class AuthorManager(BaseUserManager):
  
 class NormalUserManager(BaseUserManager):
  
-    def create_NormalUser(self, first_name, last_name, email, profession, password=None):
+    def create_normaluser(self, first_name, last_name, email, profession, password=None, **extra_fields):
 
         if email is None:
             raise TypeError('Users must have an email address.')
         
         normal_user = NormalUser(first_name=first_name, last_name=last_name, 
                             email=self.normalize_email(email), profession=profession)
-        
+
         normal_user.set_password(password)
         normal_user.save()
         return normal_user
@@ -53,9 +59,9 @@ class User(AbstractBaseUser, PermissionsMixin):
  
     @property
     def token(self):
-        dt = datetime.now() + timedelta(days=days)
+        dt = datetime.now() + timedelta(days=20)
         token = jwt.encode({
-            'id': user_id,
+            'id': self.email,
             'exp': int(time.mktime(dt.timetuple()))
         }, settings.SECRET_KEY, algorithm='HS256')
         return token.decode('utf-8')

@@ -1,6 +1,8 @@
 
 from .models import Author,NormalUser
 
+from django.contrib.auth import authenticate
+
 from rest_framework import serializers
 
 class AuthorRegistrationSerializer(serializers.ModelSerializer):
@@ -15,7 +17,7 @@ class AuthorRegistrationSerializer(serializers.ModelSerializer):
         model = Author
         fields = '__all__'
  
-    def create(self, validated_data):
+    def create(self,model):
         return Author.objects.create_author(**validated_data)
  
 class NormalUserRegistrationSerializer(serializers.ModelSerializer):
