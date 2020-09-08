@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate
 
 from rest_framework import serializers
 
+from rest_framework.validators import UniqueValidator
+
 class AuthorRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         max_length=128,
