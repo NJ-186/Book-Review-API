@@ -133,3 +133,5 @@ REST_FRAMEWORK = {
         'accounts.backends.JWTNormalUserAuthentication',
   )
 }
+
+CSRF_COOKIE_SECURE = False
