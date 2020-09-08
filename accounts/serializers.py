@@ -1,6 +1,8 @@
 
 from .models import Author,NormalUser
 
+from rest_framework import serializers
+
 class AuthorRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         max_length=128,
