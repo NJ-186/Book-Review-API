@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'book.apps.BookConfig',
+    'accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -120,3 +121,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Provide default User Model as AUTH_USER_MOEL
+AUTH_USER_MODEL = 'accounts.User'
+
+
+# Add two new backends under default authentication
+REST_FRAMEWORK = {
+  'DEFAULT_AUTHENTICATION_CLASSES': (
+        'accounts.backends.JWTAuthorAuthentication',
+        'accounts.backends.JWTNormalUserAuthentication',
+  )
+}
